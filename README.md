@@ -14,5 +14,8 @@ Latest version: https://autohotkey.com/download/ahk-install.exe
 	
 Do NOT USE AHK version 1.0.* !
 
-#### Screenshots
+#### Screenshots/Video
+
+[Video Link](https://www.youtube.com/watch?v=eSNaK9Rq_NQ)
+
 ![screenshot](https://i.imgur.com/gf7FMUX.png)
