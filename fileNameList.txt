@@ -1,0 +1,10 @@
+; list all file names here that you want to have on your GUI
+; lines prefixed with a ";" are comments
+; exclude any file extensions like ".mp3"
+1maybevaluable
+2currency
+3uniques
+4maps
+5highmaps
+6veryvaluable
+12leveling

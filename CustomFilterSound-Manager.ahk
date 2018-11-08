@@ -1,15 +1,21 @@
 /*
 	Author: Eruyome
+	https://github.com/Eruyome/PoE-CustomFilterSound-Manager
+	
 	Requires AHK version 1.1.x*
 	Latest version: https://autohotkey.com/download/ahk-install.exe
 	
-	Do NOT USE version 1.0.*
+	Do NOT USE AHK version 1.0.* !
 	
 	All first level subfolders of the folder "FilterSounds" will be recognized as their own filters
-	if they contain any .mp3 file (recursive, including subfolders).
+	if they contain any .mp3 file (does not work recursively/with subfolders).
 */
 
 #SingleInstance, force
+
+If (FileExist(A_ScriptDir "\FilterBlade_logo.png")) {
+	Menu, Tray, Icon, %A_ScriptDir%\FilterBlade_logo.png
+}
 
 global poeDir := A_MyDocuments "\My Games\Path of Exile\"
 global workingDir := A_ScriptDir "\FilterSounds\"
@@ -25,7 +31,8 @@ LoadIni()
 fileNames := ReadFileNames(fileNames)
 
 If (not FileExist(workingDir)) {	
-	MsgBox % "working dir is missing"
+	MsgBox % "Sound file directory is missing (..\FilterSounds), will be created."
+	FileCreateDir, %workingDir%
 }
 
 Loop Files, %workingDir%*.*, D
@@ -36,7 +43,7 @@ Loop Files, %workingDir%*.*, D
 	folderName := A_LoopFileName	
 	fileList := ""
 	
-	Loop Files, %A_LoopFilePath%\*.mp3, R
+	Loop Files, %A_LoopFilePath%\*.mp3
 	{
 		fileList .= RegExReplace(A_LoopFileName, "i)\..*$", "") "|"
 		soundsCount++
@@ -86,7 +93,7 @@ Gui, Add, Text, x+10 yp+5, Files will be overwritten!
 
 Gui, Add, Button, gOpen2 x10 y+20, Open filter folder
 
-Gui, Show
+Gui, Show,, CustomFilterSound-Manager
 
 Return
 
