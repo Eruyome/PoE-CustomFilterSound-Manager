@@ -6,6 +6,8 @@ Works with all Neversink filters by default, you can use it for other filters by
 
 All first level subfolders of the folder "FilterSounds" will be recognized as their own filters if they contain any .mp3 file (does not work recursively/with subfolders). This folder will be created in the same directory if it doesn't exist.
 
+Configurations will be saved in `filters.ini` (same directory).
+
 #### Requirements 
 Requires AHK version 1.1.x*
 Latest version: https://autohotkey.com/download/ahk-install.exe
