@@ -13,6 +13,14 @@
 
 #SingleInstance, force
 
+global AHKVersionRequired := "1.1.29.01"
+global MsgWrongAHKVersion := "AutoHotkey v" . AHKVersionRequired . " or later is needed to run this script. It is important not to run version 2.x.  `n`nYou are using AutoHotkey v" . A_AhkVersion . " (installed at: " . A_AhkPath . ")`n`nPlease go to http://ahkscript.org to download the most recent version."
+If (A_AhkVersion < AHKVersionRequired or A_AhkVersion >= "2.0.00.00")
+{
+	MsgBox, 16, Wrong AutoHotkey Version, % MsgWrongAHKVersion
+	ExitApp
+}
+
 If (FileExist(A_ScriptDir "\FilterBlade_logo.png")) {
 	Menu, Tray, Icon, %A_ScriptDir%\FilterBlade_logo.png
 }
