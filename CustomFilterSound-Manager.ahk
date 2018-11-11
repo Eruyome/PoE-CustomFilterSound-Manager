@@ -159,11 +159,17 @@ LoadIni() {
 
 ApplySettings() {
 	regFolder := RegExReplace(savedSettings.general.selectedFilter, "i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\))", "\$1")
-	FileAppend, `n`nBefore RegExReplace: %folderList%`n ,%A_ScriptDir%\debug.txt
+	text := savedSettings.general.selectedFilter
+	FileAppend, `n`nBefore RegExReplace: %text%`n ,%A_ScriptDir%\debug.txt
+	text := "RegExReplace(""" savedSettings.general.selectedFilter """, ""i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\)))"", ""\$1"")"
+	FileAppend, %text%`n ,%A_ScriptDir%\debug.txt	
+	FileAppend, After RegExReplace: %regFolder%`n ,%A_ScriptDir%\debug.txt
+	
+	;FileAppend, `n`nBefore RegExReplace: %folderList%`n ,%A_ScriptDir%\debug.txt
 	folderList := RegExReplace(folderList, "i)(" regFolder ")", "$1|")
-	text := "RegExReplace(""" folderList """, ""i)(" regFolder ")"", ""$1|"")"
-	FileAppend, %text%`n ,%A_ScriptDir%\debug.txt
-	FileAppend, After RegExReplace:  %folderList%`n ,%A_ScriptDir%\debug.txt
+	;text := "RegExReplace(""" folderList """, ""i)(" regFolder ")"", ""$1|"")"
+	;FileAppend, %text%`n ,%A_ScriptDir%\debug.txt
+	;FileAppend, After RegExReplace:  %folderList%`n ,%A_ScriptDir%\debug.txt
 	
 	For key, val in savedSettings[savedSettings.general.selectedFilter] {
 		If (StrLen(val)) {
