@@ -43,6 +43,8 @@ If (not FileExist(workingDir)) {
 	FileCreateDir, %workingDir%
 }
 
+FileDelete, %A_ScriptDir%\debug.txt
+
 Loop Files, %workingDir%*.*, D
 {
 	soundsFound := false
@@ -50,13 +52,15 @@ Loop Files, %workingDir%*.*, D
 	folder := []
 	folderName := A_LoopFileName	
 	fileList := ""
+
+	FileAppend, %A_LoopFilePath%`n ,%A_ScriptDir%\debug.txt
 	
 	Loop Files, %A_LoopFilePath%\*.mp3
 	{
 		fileList .= RegExReplace(A_LoopFileName, "i)\..*$", "") "|"
 		soundsCount++
 		soundsFound := true
-
+		
 		regPath := RegExReplace(workingDir, "i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\))", "\$1")
 		folder.push(RegExReplace(A_LoopFilePath, "i)" regPath folderName "\\", ""))
 	}
@@ -71,6 +75,8 @@ Loop Files, %workingDir%*.*, D
 		folderList .= folderName "|"
 	}	
 }
+
+FileAppend, `n`n%folderList%`n ,%A_ScriptDir%\debug.txt
 
 ApplySettings()
 
