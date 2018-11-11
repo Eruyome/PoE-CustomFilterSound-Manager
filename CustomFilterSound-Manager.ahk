@@ -44,8 +44,6 @@ If (not FileExist(workingDir)) {
 	FileCreateDir, %workingDir%
 }
 
-FileDelete, %A_ScriptDir%\debug.txt
-
 Loop Files, %workingDir%*.*, D
 {
 	soundsFound := false
@@ -53,8 +51,6 @@ Loop Files, %workingDir%*.*, D
 	folder := []
 	folderName := A_LoopFileName	
 	fileList := ""
-
-	FileAppend, %A_LoopFilePath%`n ,%A_ScriptDir%\debug.txt
 	
 	Loop Files, %A_LoopFilePath%\*.mp3
 	{
@@ -76,8 +72,6 @@ Loop Files, %workingDir%*.*, D
 		folderList .= folderName "|"
 	}	
 }
-
-FileAppend, `n`n%folderList%`n ,%A_ScriptDir%\debug.txt
 
 ApplySettings()
 
@@ -158,25 +152,12 @@ LoadIni() {
 }
 
 ApplySettings() {
-	FileAppend, `n`nSanitizing saved last selected filter:`n-------------------`n ,%A_ScriptDir%\debug.txt
 	regFolder := RegExReplace(savedSettings.general.selectedFilter, "i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\))", "\$1")
 	regFolder := RegExReplace(regFolder, "i)(\|)", "")
-	text := savedSettings.general.selectedFilter
-	FileAppend, Before RegExReplace: %text%`n ,%A_ScriptDir%\debug.txt
-	text := "RegExReplace(""" savedSettings.general.selectedFilter """, ""i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\))"", ""\$1"")"
-	FileAppend, %text%`n ,%A_ScriptDir%\debug.txt	
-	FileAppend, After RegExReplace: %regFolder%`n ,%A_ScriptDir%\debug.txt
 	
 	If (StrLen(regFolder)) {
-		FileAppend, `n`nManipulating folder list to mark the pre-selected list entry:`n-------------------`n ,%A_ScriptDir%\debug.txt
-		FileAppend, Before RegExReplace: %folderList%`n ,%A_ScriptDir%\debug.txt
-		folderList := RegExReplace(folderList, "i)(" regFolder ")", "$1|")
-		text := "RegExReplace(""" folderList """, ""i)(" regFolder ")"", ""$1|"")"
-		FileAppend, %text%`n ,%A_ScriptDir%\debug.txt
-		FileAppend, After RegExReplace:  %folderList%`n ,%A_ScriptDir%\debug.txt	
+		folderList := RegExReplace(folderList, "i)(" regFolder ")", "$1|")	
 	}
-	
-	FileAppend, `nFinal folderList:  %folderList%`n ,%A_ScriptDir%\debug.txt
 	
 	For key, val in savedSettings[savedSettings.general.selectedFilter] {
 		If (StrLen(val)) {
