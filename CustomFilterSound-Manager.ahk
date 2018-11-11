@@ -15,6 +15,7 @@
 
 global AHKVersionRequired := "1.1.29.01"
 global MsgWrongAHKVersion := "AutoHotkey v" . AHKVersionRequired . " or later is needed to run this script. It is important not to run version 2.x.  `n`nYou are using AutoHotkey v" . A_AhkVersion . " (installed at: " . A_AhkPath . ")`n`nPlease go to http://ahkscript.org to download the most recent version."
+global MsgWrongAHKVersion .= "`n`nMake sure not to accidentally use the wrong AHK installation if you have multiple ones."
 If (A_AhkVersion < AHKVersionRequired or A_AhkVersion >= "2.0.00.00")
 {
 	MsgBox, 16, Wrong AutoHotkey Version, % MsgWrongAHKVersion
@@ -158,7 +159,9 @@ LoadIni() {
 
 ApplySettings() {
 	regFolder := RegExReplace(savedSettings.general.selectedFilter, "i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\))", "\$1")
+	FileAppend, `n`nBefore RegExReplace: %folderList%`n ,%A_ScriptDir%\debug.txt
 	folderList := RegExReplace(folderList, "i)(" regFolder ")", "$1|")
+	FileAppend, After RegExReplace:  %folderList%`n ,%A_ScriptDir%\debug.txt
 	
 	For key, val in savedSettings[savedSettings.general.selectedFilter] {
 		If (StrLen(val)) {
