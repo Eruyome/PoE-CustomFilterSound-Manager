@@ -13,6 +13,15 @@
 
 #SingleInstance, force
 
+global AHKVersionRequired := "1.1.29.01"
+global MsgWrongAHKVersion := "AutoHotkey v" . AHKVersionRequired . " or later is needed to run this script. It is important not to run version 2.x.  `n`nYou are using AutoHotkey v" . A_AhkVersion . " (installed at: " . A_AhkPath . ")`n`nPlease go to http://ahkscript.org to download the most recent version."
+global MsgWrongAHKVersion .= "`n`nMake sure not to accidentally use the wrong AHK installation if you have multiple ones."
+If (A_AhkVersion < AHKVersionRequired or A_AhkVersion >= "2.0.00.00")
+{
+	MsgBox, 16, Wrong AutoHotkey Version, % MsgWrongAHKVersion
+	ExitApp
+}
+
 If (FileExist(A_ScriptDir "\FilterBlade_logo.png")) {
 	Menu, Tray, Icon, %A_ScriptDir%\FilterBlade_logo.png
 }
@@ -48,7 +57,7 @@ Loop Files, %workingDir%*.*, D
 		fileList .= RegExReplace(A_LoopFileName, "i)\..*$", "") "|"
 		soundsCount++
 		soundsFound := true
-
+		
 		regPath := RegExReplace(workingDir, "i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\))", "\$1")
 		folder.push(RegExReplace(A_LoopFilePath, "i)" regPath folderName "\\", ""))
 	}
@@ -144,7 +153,11 @@ LoadIni() {
 
 ApplySettings() {
 	regFolder := RegExReplace(savedSettings.general.selectedFilter, "i)(\+|\.|\?|\$|\\|\!|\[|\]|\(|\))", "\$1")
-	folderList := RegExReplace(folderList, "i)(" regFolder ")", "$1|")
+	regFolder := RegExReplace(regFolder, "i)(\|)", "")
+	
+	If (StrLen(regFolder)) {
+		folderList := RegExReplace(folderList, "i)(" regFolder ")", "$1|")	
+	}
 	
 	For key, val in savedSettings[savedSettings.general.selectedFilter] {
 		If (StrLen(val)) {
