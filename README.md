@@ -18,4 +18,6 @@ Do NOT USE AHK version 1.0.* !
 
 [Video Link](https://www.youtube.com/watch?v=eSNaK9Rq_NQ)
 
+[Related Reddit post](https://www.reddit.com/r/pathofexile/comments/9vkz15/borderlands_2_custom_loot_filter_sound_packs_for)
+
 ![screenshot](https://i.imgur.com/gf7FMUX.png)
