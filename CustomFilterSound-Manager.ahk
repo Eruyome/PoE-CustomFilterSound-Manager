@@ -213,7 +213,7 @@ Copy:
 	
 	For key, fName in fileNames {
 		copyState := CopyFile(fileDir "\" sound%key% ".mp3", poeDir . fName ".mp3")
-		If (copyState = 1) {
+		If (copyState = 0) {
 			copiedFiles ++
 		} Else {
 			errorMsg .= "ErrorLevel " copyState " when trying to copy file " fileDir "\" sound%key% ".mp3" "`n"	
@@ -233,13 +233,9 @@ Return
 CopyFile(src, target) {
 	If (FileExist(src)) {
 		FileCopy, %src%, %target%, 1
-		If (not ErrorLevel) {
-			Return 1
-		} Else {
-			Return ErrorLevel
-		}
+		Return ErrorLevel
 	} Else {
-		Return 0
+		Return 1
 	}	
 }
 
