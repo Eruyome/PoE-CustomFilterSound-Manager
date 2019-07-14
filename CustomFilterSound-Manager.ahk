@@ -209,14 +209,25 @@ Copy:
 	
 	copiedFiles := 0
 	fileDir := workingDir . selectedFolder
-
+	errorMsg := ""
+	
 	For key, fName in fileNames {
-		copiedFiles += CopyFile(fileDir "\" sound%key% ".mp3", poeDir . fName ".mp3")
+		copyState := CopyFile(fileDir "\" sound%key% ".mp3", poeDir . fName ".mp3")
+		If (copyState = 1) {
+			copiedFiles ++
+		} Else {
+			errorMsg .= "ErrorLevel " copyState " when trying to copy file " fileDir "\" sound%key% ".mp3" "`n"	
+		}
 	}
 	
 	GoSub, Save
 	
-	MsgBox, 0, BL2 sound files, %copiedFiles% file(s) replaced., 2
+	msg := copiedFiles " file(s) replaced."
+	If (StrLen(errorMsg)) {
+		msg .= "`n`n" errorMsg
+	}
+	timer := StrLen(errorMsg) ? "" : 4
+	MsgBox, 0, BL2 sound files, %msg%, %timer%
 Return
 
 CopyFile(src, target) {
@@ -224,7 +235,11 @@ CopyFile(src, target) {
 		FileCopy, %src%, %target%, 1
 		If (not ErrorLevel) {
 			Return 1
+		} Else {
+			Return ErrorLevel
 		}
+	} Else {
+		Return 0
 	}	
 }
 
